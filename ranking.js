@@ -59,5 +59,5 @@ async function carregarRanking() {
 // Carrega imediatamente
 carregarRanking();
 
-// Atualiza a cada 5 segundos
-// setInterval(carregarRanking, 5000); 
+// Atualiza a cada 10 segundos
+setInterval(carregarRanking, 10000); 
