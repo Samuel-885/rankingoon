@@ -18,6 +18,88 @@
     </div>
   </div>
 
-  <script src="ranking.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+    // Configuração do Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyClaS6owX2KeuqGVMLyOLuokQJgG5pCM4Y",
+        authDomain: "ranking-a04f3.firebaseapp.com",
+        projectId: "ranking-a04f3",
+        storageBucket: "ranking-a04f3.firebasestorage.app",
+        messagingSenderId: "933928657704",
+        appId: "1:933928657704:web:7cadbe365071c209d0e61d"
+    };
+
+    // Inicializa Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const rankingDiv = document.getElementById("ranking");
+
+    const equipes = [
+        "Tráfego Pago",
+        "Allp Fit",
+        "SEO",
+        "Podcast",
+        "Social Media",
+        "Designers",
+        "Adm",
+        "W3V"
+    ];
+
+    // Função para adicionar voto
+    async function votar(equipe) {
+        try {
+        await addDoc(collection(db, "votos"), {
+            equipe: equipe,
+            timestamp: Date.now()
+        });
+        } catch (erro) {
+        console.error("Erro ao registrar voto:", erro);
+        }
+    }
+
+    // Listener em tempo real para atualizar ranking
+    onSnapshot(collection(db, "votos"), (snapshot) => {
+        const dados = snapshot.docs.map(doc => doc.data());
+
+        // Contar votos
+        const contagem = {};
+        equipes.forEach(e => contagem[e] = 0);
+
+        dados.forEach(voto => {
+        if (contagem[voto.voto] !== undefined) {
+            contagem[voto.voto]++;
+        }
+        });
+
+
+        const totalVotos = Object.values(contagem).reduce((a, b) => a + b, 0);
+
+        // Ordena e atualiza a tela
+        const rankingOrdenado = Object.entries(contagem).sort((a, b) => b[1] - a[1]);
+
+        rankingDiv.innerHTML = ""; // limpa antes de renderizar
+
+        rankingOrdenado.forEach(([equipe, votos]) => {
+        const porcentagem = totalVotos ? Math.round((votos / totalVotos) * 100) : 0;
+
+        const divEquipe = document.createElement("div");
+        divEquipe.classList.add("equipe");
+
+        divEquipe.innerHTML = `
+            <div class="equipe-name">${equipe} - ${votos} voto(s)</div>
+            <div class="progress-bar-container">
+            <div class="progress-bar" style="width: ${porcentagem}%">${porcentagem}%</div>
+            </div>
+        `;
+
+        rankingDiv.appendChild(divEquipe);
+        });
+    });
+    </script>
+
 </body>
 </html>
