@@ -1,0 +1,85 @@
+body {
+  background-color: #181F33;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 30px 20px;
+}
+
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.logo {
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+h1 {
+  color: #B1CF6A;
+  font-size: 28px;
+}
+
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.equipe {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.equipe-name {
+  font-weight: bold;
+  font-size: 18px;
+  color: #ffffff;
+}
+
+.progress-bar-container {
+  background-color: #333c59;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 24px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #B1CF6A, #9FC04D);
+  width: 0%;
+  transition: width 0.8s ease-in-out, background-color 0.5s ease-in-out;
+  color: #181F33;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  border-radius: 0 8px 8px 0;
+}
+.progress-bar {
+  transform-origin: left;
+  transform: scaleX(1);
+  animation: crescer 0.5s ease-out;
+}
+
+@keyframes crescer {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.equipe {
+  position: relative;
+  transition: transform 0.4s ease-in-out;
+  will-change: transform;
+}
+
